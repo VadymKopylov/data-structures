@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ArrayQueueTest {
     ArrayQueue arrayQueue = new ArrayQueue();
+
     @Test
     public void testQueueAndDequeueInArrayAndChekSize(){
         arrayQueue.enqueue("1");

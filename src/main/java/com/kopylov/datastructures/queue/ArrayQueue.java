@@ -13,7 +13,6 @@ public class ArrayQueue implements Queue{
     public void enqueue(Object value) {
         array[size] = value;
         size++;
-
     }
 
     @Override
@@ -55,7 +54,6 @@ public class ArrayQueue implements Queue{
 
     @Override
     public int size() {
-
         return size;
     }
 
