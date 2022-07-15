@@ -36,16 +36,6 @@ public class ArrayList implements List {
         size++;
     }
 
-    private void ensureCapacity(){
-        if(array.length == size){
-            Object[] ensureArray = new Object[array.length + (array.length / 2)];
-            for(int i = 0;i < array.length;i++){
-                ensureArray[i] = array[i];
-            }
-            array = ensureArray;
-        }
-    }
-
     @Override
     public Object remove(int index) {
         Object[] updateArray = new Object[array.length];
@@ -132,6 +122,16 @@ public class ArrayList implements List {
             }
         }
         return -1;
+    }
+
+    private void ensureCapacity(){
+        if(array.length == size){
+            Object[] ensureArray = new Object[array.length + (array.length / 2)];
+            for(int i = 0;i < array.length;i++){
+                ensureArray[i] = array[i];
+            }
+            array = ensureArray;
+        }
     }
 
     @Override
