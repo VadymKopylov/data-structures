@@ -1,55 +1,39 @@
 package com.kopylov.datastructures.list;
 
+import java.util.StringJoiner;
+
 public class ArrayList implements List {
     private Object[] array;
     private int size;
     public ArrayList(){
         array = new Object[5];
     }
+
     @Override
     public void add(Object value) {
         ensureCapacity();
-        array[size] = value;
-        size++;
+        add(value,size);
     }
+
     @Override
     public void add(Object value, int index) {
         ensureCapacity();
-        if(array[index-1] == null){
-            throw new IndexOutOfBoundsException();
-        }if(index <= size){
-            Object[] updateArray = new Object[array.length];
-            int count = 0;
-            for(int i = 0;i < size+1; i++){
-                if(index == i){
-                    updateArray[i] = value;
-                }else{
-                    updateArray[i] = array[count];
-                    count++;
-                }
-
-            }array = updateArray;
-
-        }else{
-            array[index] = value;
+        if(index > size || index < 0){
+            throw new IndexOutOfBoundsException("Index is larger than size of the Array List( "+ size +" )");
         }
+        System.arraycopy(array, index, array, index + 1, size - index);
+        array[index] = value;
         size++;
     }
 
     @Override
     public Object remove(int index) {
-        Object[] updateArray = new Object[array.length];
-        int count = 0;
-        for(int i = 0; i <= size;i ++){
-            if(i == index){
-                size--;
-                continue;
-            }else{
-                updateArray[count] = array[i];
-                count++;
-            }
+        if(index >= size || index < 0){
+            throw new IndexOutOfBoundsException("Index is out of range than size of the Array List( "+ size +" )");
         }
-        array = updateArray;
+        System.arraycopy(array,index + 1,array,index,size - index - 1);
+        array[size - 1] = null;
+        size--;
         return array;
     }
 
@@ -93,13 +77,7 @@ public class ArrayList implements List {
 
     @Override
     public boolean contains(Object value) {
-        for(int i = 0;i < size;i++){
-            Object objectInArray = array[i];
-            if(objectInArray.equals(value)){
-                return true;
-            }
-        }
-        return false;
+        return indexOf(value) != -1;
     }
 
     @Override
@@ -126,23 +104,18 @@ public class ArrayList implements List {
 
     private void ensureCapacity(){
         if(array.length == size){
-            Object[] ensureArray = new Object[array.length + (array.length / 2)];
-            for(int i = 0;i < array.length;i++){
-                ensureArray[i] = array[i];
-            }
+            Object[] ensureArray = new Object[(int) (array.length * 1.5)];
+            System.arraycopy(array, 0, ensureArray, 0, array.length);
             array = ensureArray;
         }
     }
 
     @Override
     public String toString() {
-        String result = "";
-        for(int i = 0;i < size;i++){
-            result = result + array[i];
-            if(i < size-1){
-                result = result + ",";
-            }
+        StringJoiner stringJoiner = new StringJoiner(",","[","]");
+        for (int i = 0; i < size; i++) {
+            stringJoiner.add(array[i].toString());
         }
-        return "[" + result + "]";
+        return stringJoiner.toString();
     }
 }

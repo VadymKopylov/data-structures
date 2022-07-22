@@ -42,13 +42,25 @@ public class ArrayListTest {
     }
 
     @Test
-    public void testThrowIndexOfBoundExceptionWhenTryToAddValueByIndexThroughTheEmptySpace(){
+    public void testThrowIndexOutOfBoundExceptionWhenTryToAddValueByIndexThroughTheEmptySpace(){
         ArrayList arrayList = new ArrayList();
         arrayList.add("A");
         arrayList.add("B");
         arrayList.add("D");
 
         Assertions.assertThrows(IndexOutOfBoundsException.class, () ->{ arrayList.add("C",4);} );
+    }
+
+    @Test
+    public void testThrowIndexOutOfBoundExceptionWhenAddValueByNegativeIndex(){
+        ArrayList arrayList = new ArrayList();
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () ->{ arrayList.add("A",-1);} );
+    }
+
+    @Test
+    public void testThrowIndexOutOfBoundExceptionWhenTryToRemoveValueByIndexLessByZero(){
+        ArrayList arrayList = new ArrayList();
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () ->{ arrayList.remove(-1);} );
     }
 
     @Test
