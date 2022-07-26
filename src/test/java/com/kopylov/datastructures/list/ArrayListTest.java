@@ -1,6 +1,7 @@
 package com.kopylov.datastructures.list;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -189,6 +190,7 @@ public class ArrayListTest {
         assertEquals(2,arrayList.lastIndexOf("A"));
     }
 
+    @DisplayName("test add value to array return correct toString")
     @Test
     public void testArrayListToString(){
         ArrayList arrayList = new ArrayList();

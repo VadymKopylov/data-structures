@@ -11,12 +11,18 @@ public class ArrayList implements List {
 
     @Override
     public void add(Object value) {
+        if(value == null){
+            throw new NullPointerException("Null are not supported");
+        }
         ensureCapacity();
         add(value,size);
     }
 
     @Override
     public void add(Object value, int index) {
+        if(value == null){
+            throw new NullPointerException("Null are not supported");
+        }
         ensureCapacity();
         if(index > size || index < 0){
             throw new IndexOutOfBoundsException("Index is larger than size of the Array List( "+ size +" )");
