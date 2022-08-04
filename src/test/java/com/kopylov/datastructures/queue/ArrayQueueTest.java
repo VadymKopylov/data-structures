@@ -10,7 +10,7 @@ public class ArrayQueueTest {
     ArrayQueue arrayQueue = new ArrayQueue();
 
     @Test
-    public void testQueueAndDequeueInArrayAndChekSize(){
+    public void testQueueAndDequeueInArrayAndChangeSize(){
         arrayQueue.enqueue("1");
         arrayQueue.enqueue("2");
         arrayQueue.enqueue("3");
@@ -32,6 +32,7 @@ public class ArrayQueueTest {
         assertEquals("1",arrayQueue.peak());
         assertEquals(3,arrayQueue.size());
     }
+
     @Test
     public void testThrowExceptionIfArrayDequeueOnEmptyState(){
         Assertions.assertThrows(IllegalStateException.class,() ->{
@@ -54,6 +55,7 @@ public class ArrayQueueTest {
 
         assertTrue(arrayQueue.contains("2"));
     }
+
     @Test
     public void testReturnFalseIfArrayNotContainsValue(){
 
@@ -63,11 +65,7 @@ public class ArrayQueueTest {
 
         assertFalse(arrayQueue.contains("4"));
     }
-    @Test
-    public void testReturnFalseIfArrayIsEmpty(){
 
-        assertFalse(arrayQueue.contains("1"));
-    }
     @Test
     public void testClearArrayAfterUse(){
 
@@ -78,6 +76,7 @@ public class ArrayQueueTest {
         arrayQueue.clear();
         assertTrue(arrayQueue.isEmpty());
     }
+
     @Test
     public void testQueueWithValueToString(){
         arrayQueue.enqueue("1");
