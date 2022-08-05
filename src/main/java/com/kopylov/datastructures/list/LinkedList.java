@@ -15,7 +15,7 @@ public class LinkedList implements List {
     @Override
     public void add(Object value, int index) {
         if(index > size || index < 0){
-            throw new IndexOutOfBoundsException("Index is larger than size of the Array List( "+ size +" )");
+            throw new IndexOutOfBoundsException("Index is larger than size ( "+ size +" )");
         }
         Node newNode = new Node(value);
         if(isEmpty()){
@@ -36,6 +36,7 @@ public class LinkedList implements List {
             current.prev = newNode;
             newNode.next = current;
             newNode.prev = previous;
+            previous.next = newNode;
         }
         size++;
     }

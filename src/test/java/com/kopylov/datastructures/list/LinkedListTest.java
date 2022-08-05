@@ -8,7 +8,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LinkedListTest {
+    @Test
+    public void testAddValueToTheStartOfListWorkCorrectlyAndChangeSize(){
+        LinkedList linkedList = new LinkedList();
+        linkedList.add("A");
+        linkedList.add("B");
+        linkedList.add("C");
+        linkedList.add("D",0);
 
+        assertEquals(4,linkedList.size());
+        assertEquals("D",linkedList.get(0));
+    }
     @Test
     public void testAddAndChangeSize(){
         LinkedList linkedList = new LinkedList();
@@ -21,7 +31,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void testAddValueByLastIndexAndChangeSize(){
+    public void testAddValueToEndOfListWorkCorrectlyAndChangeSize(){
         LinkedList linkedList = new LinkedList();
         linkedList.add("A");
         linkedList.add("B");
@@ -29,6 +39,7 @@ public class LinkedListTest {
         linkedList.add("D",3);
 
         assertEquals(4,linkedList.size());
+        assertEquals("D",linkedList.get(3));
     }
 
     @Test
@@ -63,21 +74,6 @@ public class LinkedListTest {
     public void testThrowIndexOutOfBoundExceptionWhenTryToRemoveValueByIndexLessByZero(){
         LinkedList linkedList = new LinkedList();
         Assertions.assertThrows(IndexOutOfBoundsException.class, () ->{ linkedList.remove(-1);} );
-    }
-
-    @Test
-    public void testEnsureCapacity(){
-        LinkedList linkedList = new LinkedList();
-        linkedList.add("A");
-        linkedList.add("B");
-        linkedList.add("D");
-        linkedList.add("A");
-        linkedList.add("B");
-        linkedList.add("D");
-        linkedList.add("D");
-        linkedList.add("D");
-        assertEquals(8,linkedList.size());
-
     }
 
     @Test
