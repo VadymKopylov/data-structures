@@ -1,20 +1,21 @@
 package com.kopylov.datastructures.queue;
 
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class  LinkedQueue implements Queue{
+public class LinkedQueue implements Queue, Iterable {
     private Node head;
     private int size;
 
     @Override
     public void enqueue(Object value) {
         Node newNode = new Node(value);
-        if(isEmpty()){
+        if (isEmpty()) {
             head = newNode;
-        }else{
+        } else {
             Node current = head;
-            while (current.next != null){
+            while (current.next != null) {
                 current = current.next;
             }
             current.next = newNode;
@@ -24,7 +25,7 @@ public class  LinkedQueue implements Queue{
 
     @Override
     public Object dequeue() {
-        if(size == 0){
+        if (size == 0) {
             throw new IllegalStateException();
         }
         Object result = head.value;
@@ -42,8 +43,8 @@ public class  LinkedQueue implements Queue{
     @Override
     public boolean contains(Object value) {
         Node current = head;
-        while (current != null){
-            if(Objects.equals(current.value,value)){
+        while (current != null) {
+            if (Objects.equals(current.value, value)) {
                 return true;
             }
             current = current.next;
@@ -66,14 +67,35 @@ public class  LinkedQueue implements Queue{
         head = null;
         size = 0;
     }
+
     @Override
-    public String toString(){
-        StringJoiner stringJoiner = new StringJoiner(",","[","]");
+    public String toString() {
+        StringJoiner stringJoiner = new StringJoiner(",", "[", "]");
         Node current = head;
-            while (current != null){
-                stringJoiner.add(current.value.toString());
-                current = current.next;
-            }
+        while (current != null) {
+            stringJoiner.add(current.value.toString());
+            current = current.next;
+        }
         return stringJoiner.toString();
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator() {
+
+            Node current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public Object next() {
+                Object result = current.value;
+                current = current.next;
+                return result;
+            }
+        };
     }
 }

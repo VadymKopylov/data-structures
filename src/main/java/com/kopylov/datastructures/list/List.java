@@ -1,15 +1,17 @@
 package com.kopylov.datastructures.list;
 
-public interface List {
-    void add(Object value);
+import java.util.Iterator;
 
-    void add(Object value, int index);
+public interface List<T> extends Iterable<T> {
+    void add(T value);
 
-    Object remove(int index);
+    void add(T value, int index);
 
-    Object get(int index);
+    T remove(int index);
 
-    Object set(Object value, int index);
+    T get(int index);
+
+    T set(T value, int index);
 
     void clear();
 
@@ -17,13 +19,13 @@ public interface List {
 
     boolean isEmpty();
 
-    boolean contains(Object value);
+    boolean contains(T value);
 
-    int indexOf(Object value);
+    int indexOf(T value);
 
-    int lastIndexOf(Object value);
+    int lastIndexOf(T value);
 
     String toString();
 
-
+    Iterator<T> iterator();
 }
