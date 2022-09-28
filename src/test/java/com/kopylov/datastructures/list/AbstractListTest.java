@@ -301,9 +301,9 @@ public abstract class AbstractListTest<T> {
         assertTrue(iterator.hasNext());
         assertEquals("B", iterator.next());
         assertFalse(iterator.hasNext());
-        assertEquals(2,list.size());
+        assertEquals(2, list.size());
         iterator.remove();
-        assertEquals(1,list.size());
+        assertEquals(1, list.size());
 
     }
 }

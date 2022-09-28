@@ -18,7 +18,9 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     private V put(K key, V value, ArrayList<Entry<K, V>>[] buckets) {
-        ensureCapacity();
+        if (buckets.length * DEFAULT_LOAD_FACTOR <= size) {
+            ensureCapacity();
+        }
         if (containsKey(key)) {
             int bucketIndex = getIndex(key);
             List<Entry<K, V>> list = buckets[bucketIndex];
@@ -112,26 +114,23 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     private void ensureCapacity() {
-        if (buckets.length * DEFAULT_LOAD_FACTOR <= size) {
-            ArrayList<Entry<K, V>>[] augmentedArray = new ArrayList[(buckets.length * DEFAULT_GROW_FACTOR)];
-            shiftToNewBuckets(augmentedArray);
-            buckets = augmentedArray;
-
-        }
+        ArrayList<Entry<K, V>>[] augmentedArray = new ArrayList[(buckets.length * DEFAULT_GROW_FACTOR)];
+        shiftToNewBuckets(augmentedArray);
+        buckets = augmentedArray;
     }
 
-    private void shiftToNewBuckets(ArrayList<Entry<K,V>>[] augmentedArray) {
-        for(int i = 0; i < buckets.length;i++){
-            for(Entry<K,V> entry : this){
-                Entry<K,V> entry = buckets[i].get(j);
-                put(entry.key,entry.value, augmentedArray);
+    private void shiftToNewBuckets(ArrayList<Entry<K, V>>[] augmentedArray) {
+        for (int i = 0; i < buckets.length; i++) {
+            for (Iterator<Entry<K, V>> mapIterator = iterator(); mapIterator.hasNext(); ) {
+                Entry<K, V> entry = mapIterator.next();
+                put(entry.key, entry.value, augmentedArray);
             }
         }
     }
 
     @Override
-    public Iterator<Entry<K,V>> iterator() {
-        Iterator<Entry<K,V>> newIterator = new Iterator<>() {
+    public Iterator<Entry<K, V>> iterator() {
+        Iterator<Entry<K, V>> newIterator = new Iterator<>() {
             private int bucketIndex;
             private Iterator<Entry<K, V>> listIterator = buckets[bucketIndex].iterator();
 
@@ -153,7 +152,7 @@ public class HashMap<K, V> implements Map<K, V> {
             }
 
             @Override
-            public Entry<K,V> next() {
+            public Entry<K, V> next() {
                 if (hasNext()) {
                     Entry<K, V> entry = listIterator.next();
                     return entry;

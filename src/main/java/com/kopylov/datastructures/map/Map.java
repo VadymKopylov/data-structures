@@ -13,7 +13,7 @@ public interface Map<K, V> extends Iterable<Entry<K,V>> {
 
     int size();
 
-    default Iterator<Entry<K,V>> iterator() {
+    default Iterator<Entry<K, V>> iterator() {
         throw new UnsupportedOperationException();
     }
 }
