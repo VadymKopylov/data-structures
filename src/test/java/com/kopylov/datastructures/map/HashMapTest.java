@@ -3,6 +3,9 @@ package com.kopylov.datastructures.map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,76 +14,141 @@ public class HashMapTest<K, V> {
 
 
     @Test
-    public void testAddToMapValueWithKeyAndChangeSize() {
+    public void testAddValueWithKeyAndChangeSize() {
         map.put("A", 0);
         map.put("B", 1);
         map.put("C", 2);
         map.put("D", 3);
         map.put("E", 4);
         map.put("F", 5);
-        map.put("G", 6);
-        map.put("H", 7);
+        map.put("G", 1);
+        map.put("H", 2);
 
-        assertEquals(8, map.size);
+        assertEquals(8, map.size());
     }
 
     @Test
-    public void testAddToMapTwoValuesWithTheSameKeyAndCheckTheCorrectnessOfTheEntry() {
-        map.put("A", 0);
-        map.put("A", 1);
+    public void whenAddValueWithNullKey_thenGetValueWithNullKey() {
+        map.put(null, 0);
 
-        assertEquals(1, map.get("A"));
-
+        assertEquals(0, map.get(null));
     }
+
     @Test
-    public void testAddValueInOneBucketOnly(){
+    public void whenValueWithNullKeyAddInTheMiddleOfTheList_thenGetValueWithNullKey() {
         map.put("A", 1);
+        map.put(null, 0);
         map.put("F", 2);
-        map.put("K", 3);
-        assertEquals(1,map.get("A"));
-        assertEquals(2,map.get("F"));
-        assertEquals(3,map.get("K"));
+
+        assertEquals(0, map.get(null));
     }
 
     @Test
-    public void testAddValueToMapToReplaceTheOldOneAndReturnThePreviousValue() {
-        map.put("A", 0);
-        map.put("B", 1);
-        assertEquals(1, map.put("B", 10));
+    public void whenAddNullValue_thenGetThisValueByKey() {
+        map.put("A", null);
+
+        assertNull(map.get("A"));
     }
 
     @Test
-    public void testContainsKeyReturnTrueAfterAddValue() {
+    public void whenAddValuesInMap_thenReturnTrueAfterCallContainsKey() {
         map.put("B", 5);
         map.put("D", 6);
-        map.put("E", 7);
-        map.put("G", 8);
-        assertTrue(map.containsKey("G"));
         assertTrue(map.containsKey("D"));
         assertTrue(map.containsKey("B"));
-        assertTrue(map.containsKey("E"));
     }
 
     @Test
-    public void testContainsReturnFalseIfNoValueWithThisKeyIsAdded() {
+    public void whenNoValueWithThisKeyIsAdded_thenContainsReturnFalse() {
         map.put("A", 0);
         map.put("B", 1);
         assertFalse(map.containsKey("C"));
     }
 
     @Test
-    public void testRemove() {
+    public void whenRemoveValueFromMapWithNonExistentKey_thenReturnNull() {
+        map.put("B", 1);
+        assertNull(map.remove("A"));
+    }
+
+    @Test
+    public void whenRemoveByNullKey_thenSizeShouldBeEqualZero() {
+        map.put(null, 0);
+
+        assertEquals(1, map.size());
+        map.remove(null);
+        assertEquals(0, map.size());
+
+    }
+
+    @Test
+    public void whenRemoveValueFromMap_thenReturnTheValueOfTheKeyThatWasRemoved() {
         map.put("A", 0);
         map.put("B", 1);
+
         assertTrue(map.containsKey("A"));
-        map.remove("A");
+        assertEquals(0, map.remove("A"));
         assertFalse(map.containsKey("A"));
     }
 
     @Test
-    public void testNullPointerExceptionWhenTryRemoveOnEmptyList() {
+    public void whenAddValuesWithSameKey_thenChangeOldValueToTheNewOne() {
+        map.put("A", 0);
+        map.put("A", 1);
+
+        assertEquals(1, map.get("A"));
+    }
+
+    @Test
+    public void testAddValueInOneBucketOnly() {
+        map.put("A", 1);
+        map.put("F", 2);
+        map.put("K", 3);
+        assertTrue(map.containsKey("A"));
+        assertTrue(map.containsKey("F"));
+        assertTrue(map.containsKey("K"));
+    }
+
+    @Test
+    public void testAddValueToReplaceTheOldOneAndReturnThePreviousValue() {
+        map.put("A", 0);
+        map.put("B", 1);
+        assertEquals(1, map.put("B", 10));
+    }
+
+    @Test
+    public void whenAddValueInSecondBucketAndCallIterator_thenReturnTrueFromMethodHasNext() {
+        map.put("B", 0);
+        map.put("C", 1);
+        map.put("D", 3);
+        Iterator<HashMap.Entry<String, Integer>> iterator = map.iterator();
+        assertTrue(iterator.hasNext());
+    }
+
+    @Test
+    public void whenIteratorHasReturnedAllNextValues_thenThrowNoSuchElementException() {
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
+            map.put("A", 0);
+            Iterator<HashMap.Entry<String, Integer>> iterator = map.iterator();
+            assertTrue(iterator.hasNext());
+            HashMap.Entry<String, Integer> entry = iterator.next();
+            assertEquals(0, entry.getValue());
+            assertEquals("A", entry.getKey());
+            iterator.next();
+        });
+    }
+
+    @Test
+    public void whenTryRemoveOnEmptyMap_thenThrowNullPointerException() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             map.remove("A");
+        });
+    }
+
+    @Test
+    public void whenTryGetOnEmptyMap_thenNullPointerException() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            map.get("A");
         });
     }
 }

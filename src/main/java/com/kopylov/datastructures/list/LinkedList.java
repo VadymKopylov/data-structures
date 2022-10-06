@@ -142,7 +142,7 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             private Node<T> current = head;
             private boolean canRemove = false;
             private int index;
@@ -166,7 +166,7 @@ public class LinkedList<T> implements List<T> {
 
             @Override
             public void remove() {
-                if(canRemove){
+                if (canRemove) {
                     LinkedList.this.remove(index - 1);
                     canRemove = false;
                 }
