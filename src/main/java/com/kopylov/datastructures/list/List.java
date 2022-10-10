@@ -1,7 +1,5 @@
 package com.kopylov.datastructures.list;
 
-import java.util.Iterator;
-
 public interface List<T> extends Iterable<T> {
     void add(T value);
 
@@ -26,6 +24,4 @@ public interface List<T> extends Iterable<T> {
     int lastIndexOf(T value);
 
     String toString();
-
-    Iterator<T> iterator();
 }
