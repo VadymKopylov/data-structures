@@ -19,7 +19,6 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     private V put(K key, V value, Entry<K, V>[] buckets) {
-        int hash = 0;
         if (isEmptyBucket(key, buckets)) {
             buckets[getIndex(key, buckets)] = addNewEntry(key, value);
         } else if (containsKey(key, buckets)) {
@@ -30,6 +29,7 @@ public class HashMap<K, V> implements Map<K, V> {
             return result;
         } else {
             Entry<K, V> entry = getEntry(key, buckets);
+            int hash = getHash(key);
             if (entry.next != null) {
                 while (entry.next != null && entry.hash != hash) {
                     entry = entry.next;
