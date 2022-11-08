@@ -3,6 +3,7 @@ package com.kopylov.iostudy;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 public class FileAnalyzer {
@@ -17,7 +18,7 @@ public class FileAnalyzer {
         return new FileInformation(count, sentencesWithWord);
     }
 
-    private static String readContent(String path) throws IOException {
+    static String readContent(String path) throws IOException {
         File pathToFile = new File(path);
         InputStream inputStream = new FileInputStream(pathToFile);
         int fileLength = (int) pathToFile.length();
@@ -26,26 +27,29 @@ public class FileAnalyzer {
         return new String(contentArray);
     }
 
-    private static List<String> splitIntoSentences(String content) {
+    static List<String> splitIntoSentences(String content) {
         String[] sentences = SENTENCE_PATTERN.split(content);
-        List<String> splittedSentences = new ArrayList<>();
+        List<String> dividedSentences = new ArrayList<>();
         for (String sentence : sentences) {
-            splittedSentences.add(sentence);
+            dividedSentences.add(sentence);
         }
-        return splittedSentences;
+        return dividedSentences;
     }
 
-    private static List<String> filter(List<String> sentences, String word) {
+    static List<String> filter(List<String> sentences, String word) {
         List<String> sentencesWithWord = new ArrayList<>();
         for (String sentence : sentences) {
             if (sentence.contains(word)) {
                 sentencesWithWord.add(sentence);
             }
         }
+        if (sentencesWithWord.isEmpty()) {
+            throw new NoSuchElementException("No sentences with this word");
+        }
         return sentencesWithWord;
     }
 
-    private static int countWordMentions(List<String> sentencesWithWord, String word) {
+    static int countWordMentions(List<String> sentencesWithWord, String word) {
         int counter = 0;
         for (String sentence : sentencesWithWord) {
             int currentIndex;
@@ -56,16 +60,6 @@ public class FileAnalyzer {
             }
         }
         return counter;
-    }
-
-    class FileInformation {
-        private int wordCount;
-        private List<String> sentences;
-
-        public FileInformation(int wordCount, List<String> sentences) {
-            this.wordCount = wordCount;
-            this.sentences = sentences;
-        }
     }
 }
 
