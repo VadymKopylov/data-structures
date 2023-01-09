@@ -3,8 +3,8 @@ package com.kopylov.iostudy;
 import java.util.List;
 
 public class FileInformation {
-    int wordCount;
-    List<String> sentencesWithWord;
+    private final int wordCount;
+    private final List<String> sentencesWithWord;
 
     public FileInformation(int wordCount, List<String> sentencesWithWord) {
         this.wordCount = wordCount;

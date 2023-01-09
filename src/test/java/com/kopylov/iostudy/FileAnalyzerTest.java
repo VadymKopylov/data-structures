@@ -1,22 +1,21 @@
 package com.kopylov.iostudy;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import static com.kopylov.iostudy.FileAnalyzer.splitIntoSentences;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileAnalyzerTest {
 
+    private final FileAnalyzer analyzer = new FileAnalyzer();
+
     @DisplayName("Add Content And Divides It Into Sentences")
     @Test
     public void whenAddContentAndSplitIntoSentences_thenReturnDividedSentences() {
-        List<String> dividedSentences = splitIntoSentences("Hello World!Hello Java.Some duck?");
+        List<String> dividedSentences = analyzer.splitIntoSentences("Hello World!Hello Java.Some duck?");
         String expectedFirst = "Hello World!";
         String expectedSecond = "Hello Java.";
         String expectedThird = "Some duck?";
@@ -32,9 +31,10 @@ public class FileAnalyzerTest {
         List<String> sentencesWithWord = new ArrayList<>();
         sentencesWithWord.add("Hello World");
         sentencesWithWord.add("Hello Java");
+        sentencesWithWord.add("Hello Hello");
         sentencesWithWord.add("duck");
-        int expectedCount = 2;
-        int actualCount = FileAnalyzer.countWordMentions(sentencesWithWord, "Hello");
+        int expectedCount = 4;
+        int actualCount = analyzer.countWordMentions(sentencesWithWord, "Hello");
         assertEquals(expectedCount, actualCount);
 
     }
@@ -42,20 +42,10 @@ public class FileAnalyzerTest {
     @DisplayName("Add Content Return Sentence With Word")
     @Test
     public void whenAddContentDividedSentences_thenReturnSentenceWithWord() {
-        String word = "Java";
+        String word = "duck";
         String content = "Hello World!Hello Java.Some duck?";
-        List<String> dividedSentences = FileAnalyzer.filter(splitIntoSentences(content), word);
+        List<String> dividedSentences = analyzer.filter(analyzer.splitIntoSentences(content), word);
 
-        assertEquals("Hello Java.", dividedSentences.get(0));
-    }
-
-    @DisplayName("Throw Exception If Content Not Contain The Required Word")
-    @Test
-    public void whenAddContentDividedSentencesTryReturnSentenceDoesNotExist_thenReturnNoSuchElementException() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> {
-            String word = "London";
-            String content = "Hello World!Hello Java.Some duck?";
-            FileAnalyzer.filter(splitIntoSentences(content), word);
-        });
+        assertEquals("Some duck?", dividedSentences.get(0));
     }
 }

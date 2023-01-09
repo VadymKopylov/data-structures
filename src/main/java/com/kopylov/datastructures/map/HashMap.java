@@ -67,7 +67,7 @@ public class HashMap<K, V> implements Map<K, V> {
         int hash = getHash(key);
         int index = getIndex(key, buckets);
         if (size == 0) {
-            throw new NullPointerException();
+            return null;
         }
         Entry<K, V> entry = getEntry(key, buckets);
         if (entry == null) {
@@ -153,7 +153,7 @@ public class HashMap<K, V> implements Map<K, V> {
     private boolean containsKey(K key, Entry<K, V>[] buckets) {
         Entry<K, V> entry = getEntry(key, buckets);
         int hash = getHash(key);
-        if(entry == null){
+        if (entry == null) {
             return false;
         }
         if (entry.next != null) {
@@ -164,7 +164,7 @@ public class HashMap<K, V> implements Map<K, V> {
                 return true;
             }
         }
-        if(entry.next == null) {
+        if (entry.next == null) {
             if (entry.hash == hash) {
                 return Objects.equals(entry.key, key);
             }
@@ -218,7 +218,7 @@ public class HashMap<K, V> implements Map<K, V> {
     static class Entry<K, V> implements Map.Entry<K, V> {
         private final K key;
         private V value;
-        private int hash;
+        private final int hash;
         private Entry<K, V> next;
 
         private Entry(K key, V value, int hash, Entry<K, V> next) {

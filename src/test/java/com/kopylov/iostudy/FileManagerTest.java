@@ -96,7 +96,7 @@ public class FileManagerTest {
     }
 
     @AfterEach
-    public void after() throws IOException {
+    public void after() {
         new File("src/test/resources/Test2/Test1.txt").delete();
         new File("src/test/resources/Test2/Test3/Test3.txt").delete();
         new File("src/test/resources/Test2/Test2.txt").delete();

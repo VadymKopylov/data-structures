@@ -4,12 +4,12 @@ import java.io.*;
 
 public class FileManager {
     public static int countFiles(String path) {
-        File file = verifyCorrectnessOfDirectory(path);
+        File file = toDirectoryFile(path);
         return countFiles(file);
     }
 
     public static int countDirs(String path) {
-        File file = verifyCorrectnessOfDirectory(path);
+        File file = toDirectoryFile(path);
         return countDirs(file);
     }
 
@@ -27,7 +27,7 @@ public class FileManager {
         new File(from).renameTo(new File(to));
     }
 
-    private static File verifyCorrectnessOfDirectory(String path) {
+    private static File toDirectoryFile(String path) {
         File file = new File(path);
         if (!file.isDirectory()) {
             throw new IllegalArgumentException("Please enter a directory ");
@@ -38,6 +38,11 @@ public class FileManager {
     private static int countFiles(File file) {
         int count = 0;
         File[] files = file.listFiles();
+
+        if (files == null) {
+            return 0;
+        }
+
         for (File innerFile : files) {
             if (innerFile.isFile()) {
                 count++;
@@ -51,13 +56,14 @@ public class FileManager {
     private static int countDirs(File file) {
         int count = 0;
         File[] files = file.listFiles();
-        for (File internalFile : files) {
-            if (internalFile.isDirectory()) {
-                count++;
-                count += countDirs(internalFile);
+        if (files != null) {
+            for (File internalFile : files) {
+                if (internalFile.isDirectory()) {
+                    count++;
+                    count += countDirs(internalFile);
+                }
             }
         }
-
         return count;
     }
 
@@ -68,7 +74,6 @@ public class FileManager {
             copyDirs(from, to);
         }
     }
-
     private static void copyDirs(File from, File to) throws IOException {
         if (!to.exists()) {
             to.mkdir();
@@ -80,13 +85,10 @@ public class FileManager {
         }
     }
 
-    private static void copyFile(File from, File to) {
-        try {
-            InputStream inputStream = new FileInputStream(from);
-            OutputStream outputStream = new FileOutputStream(to);
+    private static void copyFile(File from, File to) throws IOException {
+        try (InputStream inputStream = new FileInputStream(from);
+             OutputStream outputStream = new FileOutputStream(to)) {
             inputStream.transferTo(outputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

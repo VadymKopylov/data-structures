@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class ArrayList<T> implements List<T> {
+public class ArrayList<T> extends AbstractList<T> {
     private static final int DEFAULT_INITIAL_CAPACITY = 5;
 
     private T[] array;
@@ -20,14 +20,9 @@ public class ArrayList<T> implements List<T> {
     }
 
     @Override
-    public void add(T value) {
-        add(value, size);
-    }
-
-    @Override
     public void add(T value, int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Insert index must be from 0 to " + size);
+            throw new IndexOutOfBoundsException("Insert index must be from 0 (inclusive) to " + size + "(inclusive)");
         }
         ensureCapacity();
         System.arraycopy(array, index, array, index + 1, size - index);
@@ -38,7 +33,7 @@ public class ArrayList<T> implements List<T> {
     @Override
     public T remove(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index to remove must be from 0 to " + (size - 1));
+            throw new IndexOutOfBoundsException("Index to remove must be from 0 (inclusive) to " + size + "(exclusive)");
         }
         T result = array[index];
         System.arraycopy(array, index + 1, array, index, size - index - 1);
@@ -70,25 +65,7 @@ public class ArrayList<T> implements List<T> {
     }
 
     @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
-    public boolean contains(T value) {
-        return indexOf(value) != -1;
-    }
-
-    @Override
     public int indexOf(T value) {
-        if (size == 0) {
-            return -1;
-        }
         for (int i = 0; i < size; i++) {
             T objectInArray = array[i];
             if (Objects.equals(objectInArray, value)) {
@@ -100,11 +77,6 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(T value) {
-        if (size == 0) {
-            return -1;
-        } else if (size == 1) {
-            return 0;
-        }
         for (int i = size - 1; i >= 0; i--) {
             T objectInArray = array[i];
             if (Objects.equals(objectInArray, value)) {
@@ -112,15 +84,6 @@ public class ArrayList<T> implements List<T> {
             }
         }
         return -1;
-    }
-
-    @Override
-    public String toString() {
-        StringJoiner stringJoiner = new StringJoiner(",", "[", "]");
-        for (int i = 0; i < size; i++) {
-            stringJoiner.add(String.valueOf(array[i]));
-        }
-        return stringJoiner.toString();
     }
 
     @Override
@@ -162,12 +125,6 @@ public class ArrayList<T> implements List<T> {
             T[] augmentedArray = (T[]) new Object[(int) (array.length * 1.5) + 1];
             System.arraycopy(array, 0, augmentedArray, 0, array.length);
             array = augmentedArray;
-        }
-    }
-
-    private void validateIndexInBounds(int index) {
-        if (index > size - 1 || index < 0) {
-            throw new IndexOutOfBoundsException("Index is not valid");
         }
     }
 }

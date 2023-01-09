@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HashMapTest<K, V> {
+public class HashMapTest {
     private final HashMap<String, Integer> map = new HashMap<>();
 
     @DisplayName("Add values in map with default capacity and change size")
